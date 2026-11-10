@@ -42,10 +42,37 @@ class ModelConfig:
 
 MODELS = {
     # LLaMA family
+    # Qwen 3 family
+    "qwen3-0.6b": ModelConfig("Qwen3 0.6B", 0.75e9, 0.75e9, 28, 16, 8, 1024, 128, 3072, 151936, 32768, arch="Qwen3"),
+    "qwen3-1.7b": ModelConfig("Qwen3 1.7B", 2.03e9, 2.03e9, 28, 16, 8, 2048, 128, 6144, 151936, 32768, arch="Qwen3"),
+    "qwen3-4b": ModelConfig("Qwen3 4B", 4.02e9, 4.02e9, 36, 32, 8, 2560, 128, 9728, 151936, 32768, arch="Qwen3"),
+    "qwen3-8b": ModelConfig("Qwen3 8B", 8.19e9, 8.19e9, 36, 32, 8, 4096, 128, 12288, 151936, 32768, arch="Qwen3"),
+    "qwen3-14b": ModelConfig("Qwen3 14B", 14.77e9, 14.77e9, 40, 40, 8, 5120, 128, 17408, 151936, 32768, arch="Qwen3"),
+    "qwen3-32b": ModelConfig("Qwen3 32B", 32.76e9, 32.76e9, 64, 64, 8, 5120, 128, 25600, 151936, 32768, arch="Qwen3"),
+    "qwen3-30b-a3b": ModelConfig("Qwen3 30B-A3B", 30.5e9, 3.4e9, 48, 32, 4, 2048, 128, 768, 151936, 32768, True, 128, 8, arch="Qwen3", note="MoE"),
+    "qwen3-235b-a22b": ModelConfig("Qwen3 235B-A22B", 235.1e9, 22.5e9, 94, 64, 4, 4096, 128, 1536, 151936, 32768, True, 128, 8, arch="Qwen3", note="MoE"),
+    "qwen3-coder-30b-a3b": ModelConfig("Qwen3-Coder 30B-A3B", 30.5e9, 3.4e9, 48, 32, 4, 2048, 128, 768, 151936, 262144, True, 128, 8, arch="Qwen3", note="MoE coder"),
+    "qwen3-coder-next": ModelConfig("Qwen3-Coder-Next 80B-A3B", 80.0e9, 3.9e9, 48, 16, 2, 2048, 256, 512, 151936, 262144, True, 512, 10, arch="Qwen3Next", softmax_attn_layers=12, note="MoE + hybrid linear attn"),
+
+    # Qwen 3.5 / 3.6 / 3.8 family (hybrid linear + full attention)
+    "qwen3.5-0.8b": ModelConfig("Qwen3.5 0.8B", 0.87e9, 0.87e9, 24, 16, 4, 896, 256, 4864, 248320, 262144, arch="Qwen3.5", softmax_attn_layers=6, note="hybrid linear attn"),
+    "qwen3.5-2b": ModelConfig("Qwen3.5 2B", 2.27e9, 2.27e9, 30, 16, 4, 1536, 256, 5632, 248320, 262144, arch="Qwen3.5", softmax_attn_layers=8, note="hybrid linear attn"),
+    "qwen3.5-4b": ModelConfig("Qwen3.5 4B", 4.66e9, 4.66e9, 32, 16, 4, 2560, 256, 9216, 248320, 262144, arch="Qwen3.5", softmax_attn_layers=8, note="hybrid linear attn"),
+    "qwen3.5-9b": ModelConfig("Qwen3.5 9B", 9.4e9, 9.4e9, 32, 16, 4, 4096, 256, 12288, 248320, 262144, arch="Qwen3.5", softmax_attn_layers=8, note="hybrid linear attn"),
+    "qwen3.5-27b": ModelConfig("Qwen3.5 27B", 27.8e9, 27.8e9, 64, 24, 4, 5120, 256, 17408, 248320, 262144, arch="Qwen3.5", softmax_attn_layers=16, note="hybrid linear attn"),
+    "qwen3.6-27b": ModelConfig("Qwen3.6 27B", 27.8e9, 27.8e9, 64, 24, 4, 5120, 256, 17408, 248320, 262144, arch="Qwen3.5", softmax_attn_layers=16, note="hybrid linear attn"),
+    "qwen3.6-35b-a3b": ModelConfig("Qwen3.6 35B-A3B", 36.0e9, 3.4e9, 40, 16, 2, 2048, 256, 512, 248320, 262144, True, 256, 8, arch="Qwen3.5MoE", softmax_attn_layers=10, note="MoE + hybrid linear attn"),
+    "qwen3.8-27b": ModelConfig("Qwen3.8 27B", 27.8e9, 27.8e9, 64, 24, 4, 5120, 256, 17408, 248320, 262144, arch="Qwen3.5", softmax_attn_layers=16, note="hybrid linear attn"),
+    "qwen3.8-flash-next": ModelConfig("Qwen3.8 Flash-Next 180B", 180.0e9, 95.0e9, 48, 24, 2, 2560, 256, 640, 248320, 262144, True, 512, 10, arch="Qwen4Exp", softmax_attn_layers=12, note="MoE + hybrid linear attn"),
+
+    # LLaMA family
     "llama-3.2-1b": ModelConfig("LLaMA 3.2 1B", 1.24e9, 1.24e9, 16, 32, 8, 2048, 64, 8192, 128256, 131072, arch="LLaMA"),
     "llama-3.2-3b": ModelConfig("LLaMA 3.2 3B", 3.21e9, 3.21e9, 28, 24, 8, 3072, 128, 8192, 128256, 131072, arch="LLaMA"),
     "llama-3-8b": ModelConfig("LLaMA 3 8B", 8e9, 8e9, 32, 32, 8, 4096, 128, 14336, 128256, 8192, arch="LLaMA"),
+    "llama-3.1-8b": ModelConfig("LLaMA 3.1 8B", 8e9, 8e9, 32, 32, 8, 4096, 128, 14336, 128256, 131072, arch="LLaMA"),
     "llama-3-70b": ModelConfig("LLaMA 3 70B", 70.6e9, 70.6e9, 80, 64, 8, 8192, 128, 28672, 128256, 8192, arch="LLaMA"),
+    "llama-3.1-70b": ModelConfig("LLaMA 3.1 70B", 70.6e9, 70.6e9, 80, 64, 8, 8192, 128, 28672, 128256, 131072, arch="LLaMA"),
+    "llama-3.3-70b": ModelConfig("LLaMA 3.3 70B", 70.6e9, 70.6e9, 80, 64, 8, 8192, 128, 28672, 128256, 131072, arch="LLaMA"),
     "llama-3.1-405b": ModelConfig("LLaMA 3.1 405B", 405e9, 405e9, 126, 128, 8, 16384, 128, 53248, 128256, 131072, arch="LLaMA"),
 
     # Qwen 2.5 family
@@ -84,10 +111,31 @@ MODELS = {
     "minimax-m2.1": ModelConfig("MiniMax-M2.1", 229e9, 10.5e9, 62, 48, 8, 3072, 128, 1536, 200064, 196608, True, 256, 8, arch="MiniMax", note="MoE + MTP"),
     "minimax-m2.5": ModelConfig("MiniMax-M2.5", 229e9, 10.5e9, 62, 48, 8, 3072, 128, 1536, 200064, 196608, True, 256, 8, arch="MiniMax", note="MoE + MTP"),
 
-    # Gemma
+    # Gemma 1.1
+    "gemma-1.1-2b": ModelConfig("Gemma 1.1 2B", 2.6e9, 2.6e9, 26, 8, 4, 2048, 128, 16384, 256000, 8192, arch="Gemma"),
+    "gemma-1.1-7b": ModelConfig("Gemma 1.1 7B", 8.1e9, 8.1e9, 30, 16, 8, 3072, 128, 24576, 256000, 8192, arch="Gemma"),
+
+    # Gemma 2
     "gemma-2-2b": ModelConfig("Gemma 2 2B", 2.6e9, 2.6e9, 26, 8, 4, 2304, 256, 9216, 256000, 8192, arch="Gemma"),
     "gemma-2-9b": ModelConfig("Gemma 2 9B", 9.2e9, 9.2e9, 42, 16, 8, 3584, 256, 14336, 256000, 8192, arch="Gemma"),
     "gemma-2-27b": ModelConfig("Gemma 2 27B", 27.2e9, 27.2e9, 46, 32, 16, 4608, 128, 36864, 256000, 8192, arch="Gemma"),
+
+    # Gemma 3 (hybrid sliding-window + global attention)
+    "gemma-3-1b": ModelConfig("Gemma 3 1B", 1.0e9, 1.0e9, 26, 4, 1, 1152, 256, 6912, 262144, 32768, arch="Gemma3", softmax_attn_layers=26, note="all global attn"),
+    "gemma-3-4b": ModelConfig("Gemma 3 4B", 4.4e9, 4.4e9, 34, 8, 4, 2560, 256, 10240, 262208, 131072, arch="Gemma3", softmax_attn_layers=6, note="global every 6th layer"),
+    "gemma-3-12b": ModelConfig("Gemma 3 12B", 12.4e9, 12.4e9, 48, 16, 8, 3840, 256, 15360, 262208, 131072, arch="Gemma3", softmax_attn_layers=8, note="global every 6th layer"),
+    "gemma-3-27b": ModelConfig("Gemma 3 27B", 27.4e9, 27.4e9, 62, 32, 16, 5376, 128, 21504, 262208, 131072, arch="Gemma3", softmax_attn_layers=11, note="global every 6th layer"),
+
+    # Gemma 3n (effective params, PLE excluded)
+    "gemma-3n-e2b": ModelConfig("Gemma 3n E2B", 2.7e9, 2.7e9, 30, 8, 2, 2048, 256, 8192, 262400, 32768, arch="Gemma3n", note="effective params"),
+    "gemma-3n-e4b": ModelConfig("Gemma 3n E4B", 5.1e9, 5.1e9, 35, 8, 2, 2048, 256, 16384, 262400, 32768, arch="Gemma3n", note="effective params"),
+
+    # Gemma 4 (hybrid sliding-window + global attention)
+    "gemma-4-e2b": ModelConfig("Gemma 4 E2B", 5.1e9, 2.3e9, 35, 8, 1, 1536, 256, 6144, 262144, 131072, arch="Gemma4", softmax_attn_layers=7, note="effective params"),
+    "gemma-4-e4b": ModelConfig("Gemma 4 E4B", 8.0e9, 4.5e9, 42, 8, 2, 2560, 256, 10240, 262144, 131072, arch="Gemma4", softmax_attn_layers=7, note="effective params"),
+    "gemma-4-12b": ModelConfig("Gemma 4 12B", 11.95e9, 11.95e9, 48, 16, 8, 3840, 256, 15360, 262144, 262144, arch="Gemma4", softmax_attn_layers=8, note="global every 6th layer"),
+    "gemma-4-31b": ModelConfig("Gemma 4 31B", 30.7e9, 30.7e9, 60, 32, 16, 5376, 256, 21504, 262144, 262144, arch="Gemma4", softmax_attn_layers=10, note="global every 6th layer"),
+    "gemma-4-26b-a4b": ModelConfig("Gemma 4 26B-A4B", 25.2e9, 3.8e9, 30, 16, 8, 2816, 256, 704, 262144, 262144, True, 128, 8, arch="Gemma4", softmax_attn_layers=5, note="MoE + global every 6th layer"),
 }
 
 
@@ -106,22 +154,58 @@ class DeviceConfig:
 
 DEVICES = {
     # NVIDIA Data Center
+    "b200-sxm": DeviceConfig("NVIDIA B200 SXM", 192, 8000, 2250, 4500, 4500, "nvidia"),
     "h200-sxm": DeviceConfig("NVIDIA H200 SXM", 141, 4800, 989, 1979, 1979, "nvidia"),
     "h100-sxm": DeviceConfig("NVIDIA H100 SXM", 80, 3350, 989, 1979, 1979, "nvidia"),
     "a100-sxm-80": DeviceConfig("NVIDIA A100 80GB", 80, 2039, 312, 312, 624, "nvidia"),
     "a100-sxm-40": DeviceConfig("NVIDIA A100 40GB", 40, 1555, 312, 312, 624, "nvidia"),
     "l40s": DeviceConfig("NVIDIA L40S", 48, 864, 362, 733, 733, "nvidia"),
+    "l4": DeviceConfig("NVIDIA L4", 24, 300, 121, 242, 242, "nvidia"),
+    # NVIDIA Legacy Data Center (Pascal / Volta)
+    "p100-16": DeviceConfig("NVIDIA P100 16GB", 16, 732, 101, 0, 202, "nvidia"),
+    "p40": DeviceConfig("NVIDIA P40", 24, 347, 12, 0, 24, "nvidia"),
+    "v100-sxm-16": DeviceConfig("NVIDIA V100 16GB SXM", 16, 900, 125, 0, 250, "nvidia"),
+    "v100-sxm-32": DeviceConfig("NVIDIA V100 32GB SXM", 32, 900, 125, 0, 250, "nvidia"),
+    "cmp170hx": DeviceConfig("NVIDIA CMP 170HX 64GB", 64, 1386, 174, 0, 48, "nvidia"),
     # NVIDIA Consumer / Edge
+    "rtx-5090": DeviceConfig("RTX 5090", 32, 1792, 105, 210, 210, "nvidia"),
+    "rtx-5080": DeviceConfig("RTX 5080", 16, 960, 44, 89, 89, "nvidia"),
+    "rtx-5070-ti": DeviceConfig("RTX 5070 Ti", 16, 896, 37, 73, 73, "nvidia"),
+    "rtx-5070": DeviceConfig("RTX 5070", 12, 497, 30, 59, 59, "nvidia"),
+    "rtx-5060-ti": DeviceConfig("RTX 5060 Ti", 16, 448, 22, 44, 44, "nvidia"),
+    "rtx-5060": DeviceConfig("RTX 5060", 8, 448, 14, 29, 29, "nvidia"),
     "rtx-4090": DeviceConfig("RTX 4090", 24, 1008, 165, 330, 330, "nvidia"),
+    "rtx-4080-super": DeviceConfig("RTX 4080 Super", 16, 736, 97, 195, 195, "nvidia"),
     "rtx-4080": DeviceConfig("RTX 4080", 16, 717, 97, 194, 194, "nvidia"),
+    "rtx-4070-ti-super": DeviceConfig("RTX 4070 Ti Super", 16, 672, 44, 87, 87, "nvidia"),
+    "rtx-4070-ti": DeviceConfig("RTX 4070 Ti", 12, 672, 40, 80, 80, "nvidia"),
+    "rtx-4070-super": DeviceConfig("RTX 4070 Super", 12, 504, 38, 75, 75, "nvidia"),
+    "rtx-4070": DeviceConfig("RTX 4070", 12, 504, 40, 80, 80, "nvidia"),
+    "rtx-4060-ti": DeviceConfig("RTX 4060 Ti", 16, 288, 22, 44, 44, "nvidia"),
+    "rtx-4060": DeviceConfig("RTX 4060", 8, 272, 15, 30, 30, "nvidia"),
     "rtx-3090": DeviceConfig("RTX 3090", 24, 936, 71, 71, 142, "nvidia"),
+    "rtx-3080-ti": DeviceConfig("RTX 3080 Ti", 12, 912, 35, 35, 70, "nvidia"),
+    "rtx-3080": DeviceConfig("RTX 3080", 10, 912, 30, 30, 59, "nvidia"),
+    "rtx-3070-ti": DeviceConfig("RTX 3070 Ti", 8, 608, 22, 22, 43, "nvidia"),
+    "rtx-3070": DeviceConfig("RTX 3070", 8, 448, 20, 20, 41, "nvidia"),
+    "rtx-3060-ti": DeviceConfig("RTX 3060 Ti", 8, 448, 16, 16, 32, "nvidia"),
+    "rtx-3060": DeviceConfig("RTX 3060 12GB", 12, 360, 13, 13, 25, "nvidia"),
+    "rtx-2080-ti": DeviceConfig("RTX 2080 Ti", 11, 616, 13.4, 0, 27, "nvidia"),
+    "rtx-2080-super": DeviceConfig("RTX 2080 Super", 8, 616, 15.5, 0, 31, "nvidia"),
+    "rtx-2080": DeviceConfig("RTX 2080", 8, 448, 14.8, 0, 30, "nvidia"),
     "dgx-spark": DeviceConfig("NVIDIA DGX Spark (GB10)", 128, 273, 209, 418, 418, "nvidia"),
     # AMD Data Center
     "mi300x": DeviceConfig("AMD MI300X", 192, 5300, 1307, 2614, 2614, "amd"),
+    "mi325x": DeviceConfig("AMD MI325X", 256, 6000, 1307, 2614, 2614, "amd"),
     "mi250x": DeviceConfig("AMD MI250X", 128, 3277, 383, 383, 383, "amd"),
+    "mi100": DeviceConfig("AMD MI100 32GB", 32, 1024, 13.8, 0, 13.8, "amd"),
+    "mi50": DeviceConfig("AMD MI50 32GB", 32, 1024, 13.8, 0, 13.8, "amd"),
+    # AMD Data Center / Pro (Vega 20)
+    "pro-v620": DeviceConfig("AMD Radeon Pro V620 16GB", 16, 512, 13.8, 0, 13.8, "amd"),
     # AMD Consumer / Pro
     "rx-9700xt": DeviceConfig("AMD RX 9700 XT", 24, 864, 56, 112, 112, "amd"),
     "rx-9070xt": DeviceConfig("AMD RX 9070 XT", 16, 640, 49, 98, 98, "amd"),
+    "ai-pro-r9700": DeviceConfig("AMD Radeon AI PRO R9700", 32, 645, 48, 96, 96, "amd"),
     "w7900": DeviceConfig("AMD W7900", 48, 864, 61, 61, 122, "amd"),
     "rx-7900xtx": DeviceConfig("AMD RX 7900 XTX", 24, 960, 123, 123, 123, "amd"),
     # AMD APU
@@ -130,6 +214,12 @@ DEVICES = {
     "m4-max": DeviceConfig("Apple M4 Max", 128, 546, 54, 54, 54, "apple"),
     "m4-pro": DeviceConfig("Apple M4 Pro", 48, 273, 22, 22, 22, "apple"),
     "m2-ultra": DeviceConfig("Apple M2 Ultra", 192, 800, 27, 27, 27, "apple"),
+    # Intel Gaudi
+    "gaudi3": DeviceConfig("Intel Gaudi 3", 128, 3700, 900, 1835, 1835, "intel"),
+    "gaudi2": DeviceConfig("Intel Gaudi 2", 96, 2460, 420, 865, 865, "intel"),
+    # Google TPU
+    "tpu-v6e": DeviceConfig("Google TPU v6e (Trillium)", 32, 1640, 918, 918, 1836, "google"),
+    "tpu-v5p": DeviceConfig("Google TPU v5p", 95, 2765, 459, 459, 918, "google"),
 }
 
 
@@ -423,13 +513,18 @@ def compare_devices(
     tp: int = 1,
 ) -> list[dict]:
     """Compare performance across all devices for a given model config."""
+    model = MODELS[model_key]
     results = []
     for device_key in DEVICES:
         try:
             r = estimate_performance(model_key, device_key, quant_bits, prompt_len, output_len, batch_size, tp)
+            dev = DEVICES[device_key]
             results.append({
                 "device": r.device_name,
                 "device_key": device_key,
+                "vendor": dev.vendor,
+                "vram_gb": dev.vram,
+                "bw_gbs": dev.bw,
                 "fits": r.fits_in_memory,
                 "prefill_ms": round(r.prefill_time_ms, 2),
                 "decode_tps": round(r.decode_tps, 1),
@@ -439,7 +534,8 @@ def compare_devices(
             })
         except Exception:
             pass
-    results.sort(key=lambda x: x["decode_tps"], reverse=True)
+    # Sort: fits first, then by decode throughput
+    results.sort(key=lambda x: (not x["fits"], -x["decode_tps"]))
     return results
 
 
@@ -456,9 +552,14 @@ def compare_models(
     for model_key in MODELS:
         try:
             r = estimate_performance(model_key, device_key, quant_bits, prompt_len, output_len, batch_size, tp)
+            m = MODELS[model_key]
             results.append({
                 "model": r.model_name,
                 "model_key": model_key,
+                "arch": m.arch,
+                "params_b": round(m.params / 1e9, 2),
+                "active_b": round(m.active_params / 1e9, 2) if m.moe else None,
+                "moe": m.moe,
                 "fits": r.fits_in_memory,
                 "prefill_ms": round(r.prefill_time_ms, 2),
                 "decode_tps": round(r.decode_tps, 1),
@@ -468,7 +569,8 @@ def compare_models(
             })
         except Exception:
             pass
-    results.sort(key=lambda x: x["decode_tps"], reverse=True)
+    # Sort: fits first, then by decode throughput
+    results.sort(key=lambda x: (not x["fits"], -x["decode_tps"]))
     return results
 
 
@@ -542,18 +644,22 @@ def print_result(r: PerfResult):
 if __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser(description="LLM Inference Performance Estimator")
-    parser.add_argument("-m", "--model", default="llama-3-8b", choices=list(MODELS.keys()), help="Model key")
-    parser.add_argument("-d", "--device", default="rtx-4090", choices=list(DEVICES.keys()), help="Device key")
-    parser.add_argument("-q", "--quant", type=int, default=4, choices=[2, 3, 4, 8, 16], help="Quantization bits")
-    parser.add_argument("-p", "--prompt", type=int, default=512, help="Prompt length")
-    parser.add_argument("-o", "--output", type=int, default=256, help="Output length")
+    parser = argparse.ArgumentParser(
+        description="LLM Inference Performance Estimator (Roofline-based)",
+        epilog="Models: LLaMA, Qwen2.5/3/3.5/3.6/3.8, Gemma1.1/2/3/3n/4, Mistral, DeepSeek, Phi, MiniMax. "
+               "Devices: NVIDIA (Pascal-Blackwell), AMD (Vega-CDNA3), Apple Silicon.",
+    )
+    parser.add_argument("-m", "--model", default="llama-3-8b", choices=list(MODELS.keys()), help="Model key (see --list-models)")
+    parser.add_argument("-d", "--device", default="rtx-4090", choices=list(DEVICES.keys()), help="Device key (see --list-devices)")
+    parser.add_argument("-q", "--quant", type=int, default=4, choices=[2, 3, 4, 8, 16], help="Quantization bits (2/3/4/8/16)")
+    parser.add_argument("-p", "--prompt", type=int, default=512, help="Prompt length (tokens)")
+    parser.add_argument("-o", "--output", type=int, default=256, help="Output length (tokens)")
     parser.add_argument("-b", "--batch", type=int, default=1, help="Batch size")
     parser.add_argument("-t", "--tp", type=int, default=1, help="Tensor parallel GPUs")
-    parser.add_argument("--compare-devices", action="store_true", help="Compare all devices")
-    parser.add_argument("--compare-models", action="store_true", help="Compare all models")
-    parser.add_argument("--list-models", action="store_true", help="List available models")
-    parser.add_argument("--list-devices", action="store_true", help="List available devices")
+    parser.add_argument("--compare-devices", action="store_true", help="Compare all devices for the given model")
+    parser.add_argument("--compare-models", action="store_true", help="Compare all models on the given device")
+    parser.add_argument("--list-models", action="store_true", help="List all available model keys")
+    parser.add_argument("--list-devices", action="store_true", help="List all available device keys")
 
     args = parser.parse_args()
 
@@ -561,31 +667,38 @@ if __name__ == "__main__":
         print("\nAvailable Models:")
         for k, m in MODELS.items():
             moe_str = f" (MoE {m.num_experts}x top-{m.top_k}, active {m.active_params/1e9:.1f}B)" if m.moe else ""
-            print(f"  {k:25s}  {m.name:30s}  {m.params/1e9:.1f}B{moe_str}")
+            hybrid_str = f" [hybrid-attn]" if m.softmax_attn_layers is not None else ""
+            print(f"  {k:25s}  {m.name:30s}  {m.params/1e9:>7.2f}B{moe_str}{hybrid_str}")
         exit()
 
     if args.list_devices:
         print("\nAvailable Devices:")
         for k, d in DEVICES.items():
-            print(f"  {k:18s}  {d.name:38s}  {d.vram}GB  BW:{d.bw}GB/s  FP16:{d.fp16_tflops}T")
+            fp8_str = f" FP8:{d.fp8_tflops}T" if d.fp8_tflops else ""
+            print(f"  {k:18s}  {d.name:38s}  {d.vram:>4}GB  BW:{d.bw:>5}GB/s  FP16:{d.fp16_tflops:>6}T{fp8_str}")
         exit()
 
     if args.compare_devices:
         results = compare_devices(args.model, args.quant, args.prompt, args.output, args.batch, args.tp)
-        print(f"\n{'Device':<42} {'Fits':>5} {'Prefill':>10} {'Decode':>10} {'Total':>10} {'Mem':>8} {'Bottleneck':>12}")
+        m = MODELS[args.model]
+        print(f"\n{m.name} on all devices (q={args.quant}, p={args.prompt}, o={args.output}, bs={args.batch}, tp={args.tp})")
+        print(f"\n{'Device':<32} {'VRAM':>5} {'Fits':>5} {'Prefill':>10} {'Decode':>9} {'Total':>10} {'Mem':>8} {'Bottleneck':>12}")
         print("-" * 100)
         for r in results:
             fit = "✅" if r["fits"] else "❌"
-            print(f"  {r['device']:<40} {fit:>5} {_format_time(r['prefill_ms']):>10} {r['decode_tps']:>8.1f}t/s {_format_time(r['total_ms']):>10} {r['memory_gb']:>6.1f}GB {r['bottleneck']:>12}")
+            print(f"  {r['device']:<32} {r['vram_gb']:>4}GB {fit:>5} {_format_time(r['prefill_ms']):>10} {r['decode_tps']:>7.1f}t/s {_format_time(r['total_ms']):>10} {r['memory_gb']:>6.1f}GB {r['bottleneck']:>12}")
         exit()
 
     if args.compare_models:
         results = compare_models(args.device, args.quant, args.prompt, args.output, args.batch, args.tp)
-        print(f"\n{'Model':<35} {'Fits':>5} {'Prefill':>10} {'Decode':>10} {'Total':>10} {'Mem':>8} {'Bottleneck':>12}")
-        print("-" * 95)
+        d = DEVICES[args.device]
+        print(f"\nAll models on {d.name} (q={args.quant}, p={args.prompt}, o={args.output}, bs={args.batch}, tp={args.tp})")
+        print(f"\n{'Model':<32} {'Params':>8} {'Fits':>5} {'Prefill':>10} {'Decode':>9} {'Total':>10} {'Mem':>8} {'Bottleneck':>12}")
+        print("-" * 105)
         for r in results:
             fit = "✅" if r["fits"] else "❌"
-            print(f"  {r['model']:<33} {fit:>5} {_format_time(r['prefill_ms']):>10} {r['decode_tps']:>8.1f}t/s {_format_time(r['total_ms']):>10} {r['memory_gb']:>6.1f}GB {r['bottleneck']:>12}")
+            active = f"/{r['active_b']:.1f}B" if r["active_b"] else ""
+            print(f"  {r['model']:<32} {r['params_b']:>6.2f}B{active:<6} {fit:>5} {_format_time(r['prefill_ms']):>10} {r['decode_tps']:>7.1f}t/s {_format_time(r['total_ms']):>10} {r['memory_gb']:>6.1f}GB {r['bottleneck']:>12}")
         exit()
 
     r = estimate_performance(args.model, args.device, args.quant, args.prompt, args.output, args.batch, args.tp)

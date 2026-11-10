@@ -2,116 +2,227 @@
 // Used by both index.html (overall performance) and ops.html (per-op breakdown)
 
 const MODELS = {
-    // LLaMA family
+    // Qwen3
+    'qwen3-0.6b': { name:'Qwen3 0.6B', params:0.75e9, activeParams:0.75e9, layers:28, heads:16, kvHeads:8, hiddenDim:1024, headDim:128, interDim:3072, vocabSize:151936, maxCtx:32768, moe:false, arch:'Qwen3' },
+
+    'qwen3-1.7b': { name:'Qwen3 1.7B', params:2.03e9, activeParams:2.03e9, layers:28, heads:16, kvHeads:8, hiddenDim:2048, headDim:128, interDim:6144, vocabSize:151936, maxCtx:32768, moe:false, arch:'Qwen3' },
+
+    'qwen3-4b': { name:'Qwen3 4B', params:4.02e9, activeParams:4.02e9, layers:36, heads:32, kvHeads:8, hiddenDim:2560, headDim:128, interDim:9728, vocabSize:151936, maxCtx:32768, moe:false, arch:'Qwen3' },
+
+    'qwen3-8b': { name:'Qwen3 8B', params:8.19e9, activeParams:8.19e9, layers:36, heads:32, kvHeads:8, hiddenDim:4096, headDim:128, interDim:12288, vocabSize:151936, maxCtx:32768, moe:false, arch:'Qwen3' },
+
+    'qwen3-14b': { name:'Qwen3 14B', params:14.77e9, activeParams:14.77e9, layers:40, heads:40, kvHeads:8, hiddenDim:5120, headDim:128, interDim:17408, vocabSize:151936, maxCtx:32768, moe:false, arch:'Qwen3' },
+
+    'qwen3-32b': { name:'Qwen3 32B', params:32.76e9, activeParams:32.76e9, layers:64, heads:64, kvHeads:8, hiddenDim:5120, headDim:128, interDim:25600, vocabSize:151936, maxCtx:32768, moe:false, arch:'Qwen3' },
+
+    'qwen3-30b-a3b': { name:'Qwen3 30B-A3B', params:30.5e9, activeParams:3.4e9, layers:48, heads:32, kvHeads:4, hiddenDim:2048, headDim:128, interDim:768, vocabSize:151936, maxCtx:32768, moe:true, numExperts:128, topK:8, arch:'Qwen3', note:'MoE' },
+
+    'qwen3-235b-a22b': { name:'Qwen3 235B-A22B', params:235.1e9, activeParams:22.5e9, layers:94, heads:64, kvHeads:4, hiddenDim:4096, headDim:128, interDim:1536, vocabSize:151936, maxCtx:32768, moe:true, numExperts:128, topK:8, arch:'Qwen3', note:'MoE' },
+
+    'qwen3-coder-30b-a3b': { name:'Qwen3-Coder 30B-A3B', params:30.5e9, activeParams:3.4e9, layers:48, heads:32, kvHeads:4, hiddenDim:2048, headDim:128, interDim:768, vocabSize:151936, maxCtx:262144, moe:true, numExperts:128, topK:8, arch:'Qwen3', note:'MoE coder' },
+
+    // Qwen3Next
+    'qwen3-coder-next': { name:'Qwen3-Coder-Next 80B-A3B', params:80e9, activeParams:3.9e9, layers:48, heads:16, kvHeads:2, hiddenDim:2048, headDim:256, interDim:512, vocabSize:151936, maxCtx:262144, moe:true, numExperts:512, topK:10, arch:'Qwen3Next', softmaxAttnLayers:12, note:'MoE + hybrid linear attn' },
+
+    // Qwen3.5
+    'qwen3.5-0.8b': { name:'Qwen3.5 0.8B', params:0.87e9, activeParams:0.87e9, layers:24, heads:16, kvHeads:4, hiddenDim:896, headDim:256, interDim:4864, vocabSize:248320, maxCtx:262144, moe:false, arch:'Qwen3.5', softmaxAttnLayers:6, note:'hybrid linear attn' },
+
+    'qwen3.5-2b': { name:'Qwen3.5 2B', params:2.27e9, activeParams:2.27e9, layers:30, heads:16, kvHeads:4, hiddenDim:1536, headDim:256, interDim:5632, vocabSize:248320, maxCtx:262144, moe:false, arch:'Qwen3.5', softmaxAttnLayers:8, note:'hybrid linear attn' },
+
+    'qwen3.5-4b': { name:'Qwen3.5 4B', params:4.66e9, activeParams:4.66e9, layers:32, heads:16, kvHeads:4, hiddenDim:2560, headDim:256, interDim:9216, vocabSize:248320, maxCtx:262144, moe:false, arch:'Qwen3.5', softmaxAttnLayers:8, note:'hybrid linear attn' },
+
+    'qwen3.5-9b': { name:'Qwen3.5 9B', params:9.4e9, activeParams:9.4e9, layers:32, heads:16, kvHeads:4, hiddenDim:4096, headDim:256, interDim:12288, vocabSize:248320, maxCtx:262144, moe:false, arch:'Qwen3.5', softmaxAttnLayers:8, note:'hybrid linear attn' },
+
+    'qwen3.5-27b': { name:'Qwen3.5 27B', params:27.8e9, activeParams:27.8e9, layers:64, heads:24, kvHeads:4, hiddenDim:5120, headDim:256, interDim:17408, vocabSize:248320, maxCtx:262144, moe:false, arch:'Qwen3.5', softmaxAttnLayers:16, note:'hybrid linear attn' },
+
+    'qwen3.6-27b': { name:'Qwen3.6 27B', params:27.8e9, activeParams:27.8e9, layers:64, heads:24, kvHeads:4, hiddenDim:5120, headDim:256, interDim:17408, vocabSize:248320, maxCtx:262144, moe:false, arch:'Qwen3.5', softmaxAttnLayers:16, note:'hybrid linear attn' },
+
+    // Qwen3.5MoE
+    'qwen3.6-35b-a3b': { name:'Qwen3.6 35B-A3B', params:36e9, activeParams:3.4e9, layers:40, heads:16, kvHeads:2, hiddenDim:2048, headDim:256, interDim:512, vocabSize:248320, maxCtx:262144, moe:true, numExperts:256, topK:8, arch:'Qwen3.5MoE', softmaxAttnLayers:10, note:'MoE + hybrid linear attn' },
+
+    // Qwen3.5
+    'qwen3.8-27b': { name:'Qwen3.8 27B', params:27.8e9, activeParams:27.8e9, layers:64, heads:24, kvHeads:4, hiddenDim:5120, headDim:256, interDim:17408, vocabSize:248320, maxCtx:262144, moe:false, arch:'Qwen3.5', softmaxAttnLayers:16, note:'hybrid linear attn' },
+
+    // Qwen4Exp
+    'qwen3.8-flash-next': { name:'Qwen3.8 Flash-Next 180B', params:180e9, activeParams:95e9, layers:48, heads:24, kvHeads:2, hiddenDim:2560, headDim:256, interDim:640, vocabSize:248320, maxCtx:262144, moe:true, numExperts:512, topK:10, arch:'Qwen4Exp', softmaxAttnLayers:12, note:'MoE + hybrid linear attn' },
+
+    // LLaMA
     'llama-3.2-1b': { name:'LLaMA 3.2 1B', params:1.24e9, activeParams:1.24e9, layers:16, heads:32, kvHeads:8, hiddenDim:2048, headDim:64, interDim:8192, vocabSize:128256, maxCtx:131072, moe:false, arch:'LLaMA' },
+
     'llama-3.2-3b': { name:'LLaMA 3.2 3B', params:3.21e9, activeParams:3.21e9, layers:28, heads:24, kvHeads:8, hiddenDim:3072, headDim:128, interDim:8192, vocabSize:128256, maxCtx:131072, moe:false, arch:'LLaMA' },
+
     'llama-3-8b': { name:'LLaMA 3 8B', params:8e9, activeParams:8e9, layers:32, heads:32, kvHeads:8, hiddenDim:4096, headDim:128, interDim:14336, vocabSize:128256, maxCtx:8192, moe:false, arch:'LLaMA' },
+
     'llama-3.1-8b': { name:'LLaMA 3.1 8B', params:8e9, activeParams:8e9, layers:32, heads:32, kvHeads:8, hiddenDim:4096, headDim:128, interDim:14336, vocabSize:128256, maxCtx:131072, moe:false, arch:'LLaMA' },
+
     'llama-3-70b': { name:'LLaMA 3 70B', params:70.6e9, activeParams:70.6e9, layers:80, heads:64, kvHeads:8, hiddenDim:8192, headDim:128, interDim:28672, vocabSize:128256, maxCtx:8192, moe:false, arch:'LLaMA' },
+
     'llama-3.1-70b': { name:'LLaMA 3.1 70B', params:70.6e9, activeParams:70.6e9, layers:80, heads:64, kvHeads:8, hiddenDim:8192, headDim:128, interDim:28672, vocabSize:128256, maxCtx:131072, moe:false, arch:'LLaMA' },
+
     'llama-3.3-70b': { name:'LLaMA 3.3 70B', params:70.6e9, activeParams:70.6e9, layers:80, heads:64, kvHeads:8, hiddenDim:8192, headDim:128, interDim:28672, vocabSize:128256, maxCtx:131072, moe:false, arch:'LLaMA' },
+
     'llama-3.1-405b': { name:'LLaMA 3.1 405B', params:405e9, activeParams:405e9, layers:126, heads:128, kvHeads:8, hiddenDim:16384, headDim:128, interDim:53248, vocabSize:128256, maxCtx:131072, moe:false, arch:'LLaMA' },
-    // Qwen 3 family
-    'qwen3-0.6b': { name:'Qwen3 0.6B', params:0.6e9, activeParams:0.6e9, layers:28, heads:16, kvHeads:8, hiddenDim:1024, headDim:128, interDim:3072, vocabSize:151936, maxCtx:32768, moe:false, arch:'Qwen3' },
-    'qwen3-1.7b': { name:'Qwen3 1.7B', params:1.7e9, activeParams:1.7e9, layers:28, heads:16, kvHeads:8, hiddenDim:2048, headDim:128, interDim:6144, vocabSize:151936, maxCtx:32768, moe:false, arch:'Qwen3' },
-    'qwen3-4b': { name:'Qwen3 4B', params:4e9, activeParams:4e9, layers:36, heads:32, kvHeads:8, hiddenDim:2560, headDim:128, interDim:9728, vocabSize:151936, maxCtx:32768, moe:false, arch:'Qwen3' },
-    'qwen3-8b': { name:'Qwen3 8B', params:8.2e9, activeParams:8.2e9, layers:36, heads:32, kvHeads:8, hiddenDim:4096, headDim:128, interDim:12288, vocabSize:151936, maxCtx:131072, moe:false, arch:'Qwen3' },
-    'qwen3-14b': { name:'Qwen3 14B', params:14.8e9, activeParams:14.8e9, layers:40, heads:40, kvHeads:8, hiddenDim:5120, headDim:128, interDim:17408, vocabSize:151936, maxCtx:131072, moe:false, arch:'Qwen3' },
-    'qwen3-32b': { name:'Qwen3 32B', params:32.8e9, activeParams:32.8e9, layers:64, heads:64, kvHeads:8, hiddenDim:5120, headDim:128, interDim:25600, vocabSize:151936, maxCtx:131072, moe:false, arch:'Qwen3' },
-    'qwen3-30b-a3b': { name:'Qwen3-30B-A3B (MoE)', params:30.5e9, activeParams:3.3e9, layers:48, heads:32, kvHeads:4, hiddenDim:2048, headDim:128, interDim:768, vocabSize:151936, maxCtx:131072, moe:true, numExperts:128, topK:8, arch:'Qwen3' },
-    'qwen3-235b-a22b': { name:'Qwen3-235B-A22B (MoE)', params:235e9, activeParams:22e9, layers:94, heads:64, kvHeads:4, hiddenDim:4096, headDim:128, interDim:1536, vocabSize:151936, maxCtx:131072, moe:true, numExperts:128, topK:8, arch:'Qwen3' },
-    // Qwen 2.5 family
+
+    // Qwen2
     'qwen2.5-0.5b': { name:'Qwen 2.5 0.5B', params:0.49e9, activeParams:0.49e9, layers:24, heads:14, kvHeads:2, hiddenDim:896, headDim:64, interDim:4864, vocabSize:151936, maxCtx:32768, moe:false, arch:'Qwen2' },
+
     'qwen2.5-1.5b': { name:'Qwen 2.5 1.5B', params:1.54e9, activeParams:1.54e9, layers:28, heads:12, kvHeads:2, hiddenDim:1536, headDim:128, interDim:8960, vocabSize:151936, maxCtx:32768, moe:false, arch:'Qwen2' },
+
     'qwen2.5-3b': { name:'Qwen 2.5 3B', params:3.09e9, activeParams:3.09e9, layers:36, heads:16, kvHeads:2, hiddenDim:2048, headDim:128, interDim:11008, vocabSize:151936, maxCtx:32768, moe:false, arch:'Qwen2' },
+
     'qwen2.5-7b': { name:'Qwen 2.5 7B', params:7.6e9, activeParams:7.6e9, layers:28, heads:28, kvHeads:4, hiddenDim:3584, headDim:128, interDim:18944, vocabSize:152064, maxCtx:131072, moe:false, arch:'Qwen2' },
+
     'qwen2.5-14b': { name:'Qwen 2.5 14B', params:14.7e9, activeParams:14.7e9, layers:48, heads:40, kvHeads:8, hiddenDim:5120, headDim:128, interDim:13824, vocabSize:152064, maxCtx:131072, moe:false, arch:'Qwen2' },
+
     'qwen2.5-32b': { name:'Qwen 2.5 32B', params:32.5e9, activeParams:32.5e9, layers:64, heads:40, kvHeads:8, hiddenDim:5120, headDim:128, interDim:27648, vocabSize:152064, maxCtx:131072, moe:false, arch:'Qwen2' },
+
     'qwen2.5-72b': { name:'Qwen 2.5 72B', params:72.7e9, activeParams:72.7e9, layers:80, heads:64, kvHeads:8, hiddenDim:8192, headDim:128, interDim:29568, vocabSize:152064, maxCtx:131072, moe:false, arch:'Qwen2' },
-    // Mistral / Mixtral
+
+    // Mistral
     'mistral-7b': { name:'Mistral 7B', params:7.3e9, activeParams:7.3e9, layers:32, heads:32, kvHeads:8, hiddenDim:4096, headDim:128, interDim:14336, vocabSize:32000, maxCtx:32768, moe:false, arch:'Mistral' },
+
     'mistral-small-24b': { name:'Mistral Small 24B', params:24e9, activeParams:24e9, layers:40, heads:32, kvHeads:8, hiddenDim:5120, headDim:128, interDim:14336, vocabSize:32768, maxCtx:32768, moe:false, arch:'Mistral' },
+
+    // Mixtral
     'mixtral-8x7b': { name:'Mixtral 8x7B', params:46.7e9, activeParams:12.9e9, layers:32, heads:32, kvHeads:8, hiddenDim:4096, headDim:128, interDim:14336, vocabSize:32000, maxCtx:32768, moe:true, numExperts:8, topK:2, arch:'Mixtral' },
+
     'mixtral-8x22b': { name:'Mixtral 8x22B', params:141e9, activeParams:39e9, layers:56, heads:48, kvHeads:8, hiddenDim:6144, headDim:128, interDim:16384, vocabSize:32768, maxCtx:65536, moe:true, numExperts:8, topK:2, arch:'Mixtral' },
+
     // DeepSeek
     'deepseek-v2-lite': { name:'DeepSeek-V2-Lite', params:15.7e9, activeParams:2.4e9, layers:27, heads:16, kvHeads:16, hiddenDim:2048, headDim:128, interDim:10944, vocabSize:102400, maxCtx:32768, moe:true, numExperts:64, topK:6, arch:'DeepSeek', mlaCompressedDim:512 },
+
     'deepseek-v2': { name:'DeepSeek-V2', params:236e9, activeParams:21e9, layers:60, heads:128, kvHeads:128, hiddenDim:5120, headDim:128, interDim:12288, vocabSize:102400, maxCtx:131072, moe:true, numExperts:160, topK:6, arch:'DeepSeek', mlaCompressedDim:512, note:'MLA + shared experts' },
+
     'deepseek-v3': { name:'DeepSeek-V3', params:671e9, activeParams:37e9, layers:61, heads:128, kvHeads:128, hiddenDim:7168, headDim:128, interDim:18432, vocabSize:129280, maxCtx:131072, moe:true, numExperts:256, topK:8, arch:'DeepSeek', mlaCompressedDim:512, note:'MLA + shared experts' },
+
     'deepseek-r1': { name:'DeepSeek-R1', params:671e9, activeParams:37e9, layers:61, heads:128, kvHeads:128, hiddenDim:7168, headDim:128, interDim:18432, vocabSize:129280, maxCtx:131072, moe:true, numExperts:256, topK:8, arch:'DeepSeek', mlaCompressedDim:512, note:'MLA + shared experts' },
+
+    // Qwen2
     'deepseek-r1-7b': { name:'DeepSeek-R1-Distill 7B', params:7.6e9, activeParams:7.6e9, layers:28, heads:28, kvHeads:4, hiddenDim:3584, headDim:128, interDim:18944, vocabSize:152064, maxCtx:131072, moe:false, arch:'Qwen2', note:'Distilled from Qwen 2.5 7B' },
+
     'deepseek-r1-14b': { name:'DeepSeek-R1-Distill 14B', params:14.7e9, activeParams:14.7e9, layers:48, heads:40, kvHeads:8, hiddenDim:5120, headDim:128, interDim:13824, vocabSize:152064, maxCtx:131072, moe:false, arch:'Qwen2', note:'Distilled from Qwen 2.5 14B' },
+
     'deepseek-r1-32b': { name:'DeepSeek-R1-Distill 32B', params:32.5e9, activeParams:32.5e9, layers:64, heads:40, kvHeads:8, hiddenDim:5120, headDim:128, interDim:27648, vocabSize:152064, maxCtx:131072, moe:false, arch:'Qwen2', note:'Distilled from Qwen 2.5 32B' },
+
+    // LLaMA
     'deepseek-r1-70b': { name:'DeepSeek-R1-Distill 70B', params:70.6e9, activeParams:70.6e9, layers:80, heads:64, kvHeads:8, hiddenDim:8192, headDim:128, interDim:28672, vocabSize:128256, maxCtx:131072, moe:false, arch:'LLaMA', note:'Distilled from LLaMA 3 70B' },
+
     // Phi
     'phi-3-mini': { name:'Phi-3 Mini 3.8B', params:3.8e9, activeParams:3.8e9, layers:32, heads:32, kvHeads:32, hiddenDim:3072, headDim:96, interDim:8192, vocabSize:32064, maxCtx:128000, moe:false, arch:'Phi' },
+
     'phi-3-small': { name:'Phi-3 Small 7B', params:7.4e9, activeParams:7.4e9, layers:32, heads:32, kvHeads:8, hiddenDim:4096, headDim:128, interDim:14336, vocabSize:32064, maxCtx:128000, moe:false, arch:'Phi' },
+
     'phi-3-medium': { name:'Phi-3 Medium 14B', params:14e9, activeParams:14e9, layers:40, heads:40, kvHeads:10, hiddenDim:5120, headDim:128, interDim:17920, vocabSize:32064, maxCtx:128000, moe:false, arch:'Phi' },
+
     'phi-4': { name:'Phi-4 14B', params:14e9, activeParams:14e9, layers:40, heads:40, kvHeads:10, hiddenDim:5120, headDim:128, interDim:17920, vocabSize:100352, maxCtx:16384, moe:false, arch:'Phi' },
+
     // MiniMax
     'minimax-text-01': { name:'MiniMax-Text-01', params:456e9, activeParams:45.9e9, layers:80, heads:64, kvHeads:8, hiddenDim:6144, headDim:128, interDim:9216, vocabSize:200064, maxCtx:4096000, moe:true, numExperts:32, topK:2, arch:'MiniMax', softmaxAttnLayers:10, note:'Lightning Attention + MoE' },
+
     'minimax-m2.1': { name:'MiniMax-M2.1', params:229e9, activeParams:10.5e9, layers:62, heads:48, kvHeads:8, hiddenDim:3072, headDim:128, interDim:1536, vocabSize:200064, maxCtx:196608, moe:true, numExperts:256, topK:8, arch:'MiniMax', note:'MoE + MTP' },
+
     'minimax-m2.5': { name:'MiniMax-M2.5', params:229e9, activeParams:10.5e9, layers:62, heads:48, kvHeads:8, hiddenDim:3072, headDim:128, interDim:1536, vocabSize:200064, maxCtx:196608, moe:true, numExperts:256, topK:8, arch:'MiniMax', note:'MoE + MTP' },
+
     // Gemma
+    'gemma-1.1-2b': { name:'Gemma 1.1 2B', params:2.6e9, activeParams:2.6e9, layers:26, heads:8, kvHeads:4, hiddenDim:2048, headDim:128, interDim:16384, vocabSize:256000, maxCtx:8192, moe:false, arch:'Gemma' },
+
+    'gemma-1.1-7b': { name:'Gemma 1.1 7B', params:8.1e9, activeParams:8.1e9, layers:30, heads:16, kvHeads:8, hiddenDim:3072, headDim:128, interDim:24576, vocabSize:256000, maxCtx:8192, moe:false, arch:'Gemma' },
+
     'gemma-2-2b': { name:'Gemma 2 2B', params:2.6e9, activeParams:2.6e9, layers:26, heads:8, kvHeads:4, hiddenDim:2304, headDim:256, interDim:9216, vocabSize:256000, maxCtx:8192, moe:false, arch:'Gemma' },
+
     'gemma-2-9b': { name:'Gemma 2 9B', params:9.2e9, activeParams:9.2e9, layers:42, heads:16, kvHeads:8, hiddenDim:3584, headDim:256, interDim:14336, vocabSize:256000, maxCtx:8192, moe:false, arch:'Gemma' },
-    'gemma-2-27b': { name:'Gemma 2 27B', params:27.2e9, activeParams:27.2e9, layers:46, heads:32, kvHeads:16, hiddenDim:4608, headDim:128, interDim:36864, vocabSize:256000, maxCtx:8192, moe:false, arch:'Gemma' }
+
+    'gemma-2-27b': { name:'Gemma 2 27B', params:27.2e9, activeParams:27.2e9, layers:46, heads:32, kvHeads:16, hiddenDim:4608, headDim:128, interDim:36864, vocabSize:256000, maxCtx:8192, moe:false, arch:'Gemma' },
+
+    // Gemma3
+    'gemma-3-1b': { name:'Gemma 3 1B', params:1e9, activeParams:1e9, layers:26, heads:4, kvHeads:1, hiddenDim:1152, headDim:256, interDim:6912, vocabSize:262144, maxCtx:32768, moe:false, arch:'Gemma3', softmaxAttnLayers:26, note:'all global attn' },
+
+    'gemma-3-4b': { name:'Gemma 3 4B', params:4.4e9, activeParams:4.4e9, layers:34, heads:8, kvHeads:4, hiddenDim:2560, headDim:256, interDim:10240, vocabSize:262208, maxCtx:131072, moe:false, arch:'Gemma3', softmaxAttnLayers:6, note:'global every 6th layer' },
+
+    'gemma-3-12b': { name:'Gemma 3 12B', params:12.4e9, activeParams:12.4e9, layers:48, heads:16, kvHeads:8, hiddenDim:3840, headDim:256, interDim:15360, vocabSize:262208, maxCtx:131072, moe:false, arch:'Gemma3', softmaxAttnLayers:8, note:'global every 6th layer' },
+
+    'gemma-3-27b': { name:'Gemma 3 27B', params:27.4e9, activeParams:27.4e9, layers:62, heads:32, kvHeads:16, hiddenDim:5376, headDim:128, interDim:21504, vocabSize:262208, maxCtx:131072, moe:false, arch:'Gemma3', softmaxAttnLayers:11, note:'global every 6th layer' },
+
+    // Gemma3n
+    'gemma-3n-e2b': { name:'Gemma 3n E2B', params:2.7e9, activeParams:2.7e9, layers:30, heads:8, kvHeads:2, hiddenDim:2048, headDim:256, interDim:8192, vocabSize:262400, maxCtx:32768, moe:false, arch:'Gemma3n', note:'effective params' },
+
+    'gemma-3n-e4b': { name:'Gemma 3n E4B', params:5.1e9, activeParams:5.1e9, layers:35, heads:8, kvHeads:2, hiddenDim:2048, headDim:256, interDim:16384, vocabSize:262400, maxCtx:32768, moe:false, arch:'Gemma3n', note:'effective params' },
+
+    // Gemma4
+    'gemma-4-e2b': { name:'Gemma 4 E2B', params:5.1e9, activeParams:2.3e9, layers:35, heads:8, kvHeads:1, hiddenDim:1536, headDim:256, interDim:6144, vocabSize:262144, maxCtx:131072, moe:false, arch:'Gemma4', softmaxAttnLayers:7, note:'effective params' },
+
+    'gemma-4-e4b': { name:'Gemma 4 E4B', params:8e9, activeParams:4.5e9, layers:42, heads:8, kvHeads:2, hiddenDim:2560, headDim:256, interDim:10240, vocabSize:262144, maxCtx:131072, moe:false, arch:'Gemma4', softmaxAttnLayers:7, note:'effective params' },
+
+    'gemma-4-12b': { name:'Gemma 4 12B', params:11.95e9, activeParams:11.95e9, layers:48, heads:16, kvHeads:8, hiddenDim:3840, headDim:256, interDim:15360, vocabSize:262144, maxCtx:262144, moe:false, arch:'Gemma4', softmaxAttnLayers:8, note:'global every 6th layer' },
+
+    'gemma-4-31b': { name:'Gemma 4 31B', params:30.7e9, activeParams:30.7e9, layers:60, heads:32, kvHeads:16, hiddenDim:5376, headDim:256, interDim:21504, vocabSize:262144, maxCtx:262144, moe:false, arch:'Gemma4', softmaxAttnLayers:10, note:'global every 6th layer' },
+
+    'gemma-4-26b-a4b': { name:'Gemma 4 26B-A4B', params:25.2e9, activeParams:3.8e9, layers:30, heads:16, kvHeads:8, hiddenDim:2816, headDim:256, interDim:704, vocabSize:262144, maxCtx:262144, moe:true, numExperts:128, topK:8, arch:'Gemma4', softmaxAttnLayers:5, note:'MoE + global every 6th layer' }
 };
 
 const DEVICES = {
-    // interconnectBW: unidirectional per-GPU link bandwidth (GB/s) for AllReduce
-    // interconnectLatUs: per-AllReduce latency (μs) incl. software overhead
-    // maxGPUs: max realistic multi-GPU count for this device
-    'h200-sxm': { name:'NVIDIA H200 SXM', vram:141, bw:4800, fp16Tflops:989, fp8Tflops:1979, int8Tflops:1979, vendor:'nvidia', interconnectBW:450, interconnectLatUs:5, maxGPUs:8 },
+    // ── NVIDIA ──
     'b200-sxm': { name:'NVIDIA B200 SXM', vram:192, bw:8000, fp16Tflops:2250, fp8Tflops:4500, int8Tflops:4500, vendor:'nvidia', interconnectBW:900, interconnectLatUs:3, maxGPUs:8 },
+    'h200-sxm': { name:'NVIDIA H200 SXM', vram:141, bw:4800, fp16Tflops:989, fp8Tflops:1979, int8Tflops:1979, vendor:'nvidia', interconnectBW:450, interconnectLatUs:5, maxGPUs:8 },
     'h100-sxm': { name:'NVIDIA H100 SXM', vram:80, bw:3350, fp16Tflops:989, fp8Tflops:1979, int8Tflops:1979, vendor:'nvidia', interconnectBW:450, interconnectLatUs:5, maxGPUs:8 },
     'a100-sxm-80': { name:'NVIDIA A100 80GB', vram:80, bw:2039, fp16Tflops:312, fp8Tflops:312, int8Tflops:624, vendor:'nvidia', interconnectBW:300, interconnectLatUs:5, maxGPUs:8 },
     'a100-sxm-40': { name:'NVIDIA A100 40GB', vram:40, bw:1555, fp16Tflops:312, fp8Tflops:312, int8Tflops:624, vendor:'nvidia', interconnectBW:300, interconnectLatUs:5, maxGPUs:8 },
     'l40s': { name:'NVIDIA L40S', vram:48, bw:864, fp16Tflops:362, fp8Tflops:733, int8Tflops:733, vendor:'nvidia', interconnectBW:32, interconnectLatUs:15, maxGPUs:8 },
     'l4': { name:'NVIDIA L4', vram:24, bw:300, fp16Tflops:121, fp8Tflops:242, int8Tflops:242, vendor:'nvidia', interconnectBW:0, interconnectLatUs:0, maxGPUs:1 },
-    // ── GeForce RTX 50 (Blackwell) ──
-    'rtx-5090': { name:'RTX 5090', vram:32, bw:1792, fp16Tflops:209, fp8Tflops:419, int8Tflops:419, vendor:'nvidia', interconnectBW:64, interconnectLatUs:10, maxGPUs:2 },
-    'rtx-5080': { name:'RTX 5080', vram:16, bw:960, fp16Tflops:113, fp8Tflops:225, int8Tflops:225, vendor:'nvidia', interconnectBW:64, interconnectLatUs:10, maxGPUs:2 },
-    'rtx-5070ti': { name:'RTX 5070 Ti', vram:16, bw:896, fp16Tflops:88, fp8Tflops:176, int8Tflops:176, vendor:'nvidia', interconnectBW:64, interconnectLatUs:10, maxGPUs:2 },
-    'rtx-5070': { name:'RTX 5070', vram:12, bw:672, fp16Tflops:62, fp8Tflops:123, int8Tflops:123, vendor:'nvidia', interconnectBW:64, interconnectLatUs:10, maxGPUs:2 },
-    // ── GeForce RTX 40 (Ada Lovelace) ──
+    'p100-16': { name:'NVIDIA P100 16GB', vram:16, bw:732, fp16Tflops:101, fp8Tflops:0, int8Tflops:202, vendor:'nvidia', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
+    'p40': { name:'NVIDIA P40', vram:24, bw:347, fp16Tflops:12, fp8Tflops:0, int8Tflops:24, vendor:'nvidia', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
+    'v100-sxm-16': { name:'NVIDIA V100 16GB SXM', vram:16, bw:900, fp16Tflops:125, fp8Tflops:0, int8Tflops:250, vendor:'nvidia', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
+    'v100-sxm-32': { name:'NVIDIA V100 32GB SXM', vram:32, bw:900, fp16Tflops:125, fp8Tflops:0, int8Tflops:250, vendor:'nvidia', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
+    'cmp170hx': { name:'NVIDIA CMP 170HX 64GB', vram:64, bw:1386, fp16Tflops:174, fp8Tflops:0, int8Tflops:48, vendor:'nvidia', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
+    'rtx-5090': { name:'RTX 5090', vram:32, bw:1792, fp16Tflops:105, fp8Tflops:210, int8Tflops:210, vendor:'nvidia', interconnectBW:64, interconnectLatUs:10, maxGPUs:2 },
+    'rtx-5080': { name:'RTX 5080', vram:16, bw:960, fp16Tflops:44, fp8Tflops:89, int8Tflops:89, vendor:'nvidia', interconnectBW:64, interconnectLatUs:10, maxGPUs:2 },
+    'rtx-5070-ti': { name:'RTX 5070 Ti', vram:16, bw:896, fp16Tflops:37, fp8Tflops:73, int8Tflops:73, vendor:'nvidia', interconnectBW:64, interconnectLatUs:10, maxGPUs:2 },
+    'rtx-5070': { name:'RTX 5070', vram:12, bw:497, fp16Tflops:30, fp8Tflops:59, int8Tflops:59, vendor:'nvidia', interconnectBW:64, interconnectLatUs:10, maxGPUs:2 },
+    'rtx-5060-ti': { name:'RTX 5060 Ti', vram:16, bw:448, fp16Tflops:22, fp8Tflops:44, int8Tflops:44, vendor:'nvidia', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
+    'rtx-5060': { name:'RTX 5060', vram:8, bw:448, fp16Tflops:14, fp8Tflops:29, int8Tflops:29, vendor:'nvidia', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
     'rtx-4090': { name:'RTX 4090', vram:24, bw:1008, fp16Tflops:165, fp8Tflops:330, int8Tflops:330, vendor:'nvidia', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
-    'rtx-4080s': { name:'RTX 4080 SUPER', vram:16, bw:736, fp16Tflops:104, fp8Tflops:209, int8Tflops:209, vendor:'nvidia', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
+    'rtx-4080-super': { name:'RTX 4080 Super', vram:16, bw:736, fp16Tflops:97, fp8Tflops:195, int8Tflops:195, vendor:'nvidia', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
     'rtx-4080': { name:'RTX 4080', vram:16, bw:717, fp16Tflops:97, fp8Tflops:194, int8Tflops:194, vendor:'nvidia', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
-    'rtx-4070tis': { name:'RTX 4070 Ti SUPER', vram:16, bw:672, fp16Tflops:88, fp8Tflops:176, int8Tflops:176, vendor:'nvidia', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
-    'rtx-4070ti': { name:'RTX 4070 Ti', vram:12, bw:504, fp16Tflops:80, fp8Tflops:160, int8Tflops:160, vendor:'nvidia', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
-    'rtx-4070s': { name:'RTX 4070 SUPER', vram:12, bw:504, fp16Tflops:71, fp8Tflops:142, int8Tflops:142, vendor:'nvidia', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
-    'rtx-4070': { name:'RTX 4070', vram:12, bw:504, fp16Tflops:58, fp8Tflops:116, int8Tflops:116, vendor:'nvidia', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
-    'rtx-4060ti-16': { name:'RTX 4060 Ti 16GB', vram:16, bw:288, fp16Tflops:44, fp8Tflops:88, int8Tflops:88, vendor:'nvidia', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
-    'rtx-4060ti': { name:'RTX 4060 Ti', vram:8, bw:288, fp16Tflops:44, fp8Tflops:88, int8Tflops:88, vendor:'nvidia', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
-    'rtx-4060': { name:'RTX 4060', vram:8, bw:272, fp16Tflops:30, fp8Tflops:61, int8Tflops:61, vendor:'nvidia', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
-    // ── GeForce RTX 30 (Ampere — no FP8) ──
+    'rtx-4070-ti-super': { name:'RTX 4070 Ti Super', vram:16, bw:672, fp16Tflops:44, fp8Tflops:87, int8Tflops:87, vendor:'nvidia', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
+    'rtx-4070-ti': { name:'RTX 4070 Ti', vram:12, bw:672, fp16Tflops:40, fp8Tflops:80, int8Tflops:80, vendor:'nvidia', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
+    'rtx-4070-super': { name:'RTX 4070 Super', vram:12, bw:504, fp16Tflops:38, fp8Tflops:75, int8Tflops:75, vendor:'nvidia', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
+    'rtx-4070': { name:'RTX 4070', vram:12, bw:504, fp16Tflops:40, fp8Tflops:80, int8Tflops:80, vendor:'nvidia', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
+    'rtx-4060-ti': { name:'RTX 4060 Ti', vram:16, bw:288, fp16Tflops:22, fp8Tflops:44, int8Tflops:44, vendor:'nvidia', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
+    'rtx-4060': { name:'RTX 4060', vram:8, bw:272, fp16Tflops:15, fp8Tflops:30, int8Tflops:30, vendor:'nvidia', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
     'rtx-3090': { name:'RTX 3090', vram:24, bw:936, fp16Tflops:71, fp8Tflops:71, int8Tflops:142, vendor:'nvidia', interconnectBW:56, interconnectLatUs:8, maxGPUs:2 },
-    'rtx-3080ti': { name:'RTX 3080 Ti', vram:12, bw:912, fp16Tflops:68, fp8Tflops:68, int8Tflops:136, vendor:'nvidia', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
-    'rtx-3080': { name:'RTX 3080', vram:10, bw:760, fp16Tflops:60, fp8Tflops:60, int8Tflops:119, vendor:'nvidia', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
-    'rtx-3070ti': { name:'RTX 3070 Ti', vram:8, bw:608, fp16Tflops:44, fp8Tflops:44, int8Tflops:87, vendor:'nvidia', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
-    'rtx-3070': { name:'RTX 3070', vram:8, bw:448, fp16Tflops:41, fp8Tflops:41, int8Tflops:81, vendor:'nvidia', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
-    'rtx-3060ti': { name:'RTX 3060 Ti', vram:8, bw:448, fp16Tflops:32, fp8Tflops:32, int8Tflops:65, vendor:'nvidia', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
-    'rtx-3060': { name:'RTX 3060', vram:12, bw:360, fp16Tflops:25, fp8Tflops:25, int8Tflops:51, vendor:'nvidia', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
-    // ── NVIDIA Edge ──
+    'rtx-3080-ti': { name:'RTX 3080 Ti', vram:12, bw:912, fp16Tflops:35, fp8Tflops:35, int8Tflops:70, vendor:'nvidia', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
+    'rtx-3080': { name:'RTX 3080', vram:10, bw:912, fp16Tflops:30, fp8Tflops:30, int8Tflops:59, vendor:'nvidia', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
+    'rtx-3070-ti': { name:'RTX 3070 Ti', vram:8, bw:608, fp16Tflops:22, fp8Tflops:22, int8Tflops:43, vendor:'nvidia', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
+    'rtx-3070': { name:'RTX 3070', vram:8, bw:448, fp16Tflops:20, fp8Tflops:20, int8Tflops:41, vendor:'nvidia', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
+    'rtx-3060-ti': { name:'RTX 3060 Ti', vram:8, bw:448, fp16Tflops:16, fp8Tflops:16, int8Tflops:32, vendor:'nvidia', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
+    'rtx-3060': { name:'RTX 3060 12GB', vram:12, bw:360, fp16Tflops:13, fp8Tflops:13, int8Tflops:25, vendor:'nvidia', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
+    'rtx-2080-ti': { name:'RTX 2080 Ti', vram:11, bw:616, fp16Tflops:13.4, fp8Tflops:0, int8Tflops:27, vendor:'nvidia', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
+    'rtx-2080-super': { name:'RTX 2080 Super', vram:8, bw:616, fp16Tflops:15.5, fp8Tflops:0, int8Tflops:31, vendor:'nvidia', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
+    'rtx-2080': { name:'RTX 2080', vram:8, bw:448, fp16Tflops:14.8, fp8Tflops:0, int8Tflops:30, vendor:'nvidia', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
     'dgx-spark': { name:'NVIDIA DGX Spark (GB10)', vram:128, bw:273, fp16Tflops:209, fp8Tflops:418, int8Tflops:418, vendor:'nvidia', interconnectBW:0, interconnectLatUs:0, maxGPUs:1 },
+    // ── AMD ──
     'mi300x': { name:'AMD MI300X', vram:192, bw:5300, fp16Tflops:1307, fp8Tflops:2614, int8Tflops:2614, vendor:'amd', interconnectBW:448, interconnectLatUs:5, maxGPUs:8 },
     'mi325x': { name:'AMD MI325X', vram:256, bw:6000, fp16Tflops:1307, fp8Tflops:2614, int8Tflops:2614, vendor:'amd', interconnectBW:448, interconnectLatUs:5, maxGPUs:8 },
     'mi250x': { name:'AMD MI250X', vram:128, bw:3277, fp16Tflops:383, fp8Tflops:383, int8Tflops:383, vendor:'amd', interconnectBW:400, interconnectLatUs:5, maxGPUs:8 },
-    'rx-9700xt': { name:'Radeon RX 9700 XT', vram:24, bw:864, fp16Tflops:56, fp8Tflops:112, int8Tflops:112, vendor:'amd', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
-    'rx-9070xt': { name:'Radeon RX 9070 XT', vram:16, bw:640, fp16Tflops:49, fp8Tflops:98, int8Tflops:98, vendor:'amd', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
-    'ai-pro-r9700': { name:'Radeon AI PRO R9700', vram:32, bw:645, fp16Tflops:48, fp8Tflops:96, int8Tflops:96, vendor:'amd', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
-    'w7900': { name:'Radeon PRO W7900', vram:48, bw:864, fp16Tflops:61, fp8Tflops:61, int8Tflops:122, vendor:'amd', interconnectBW:32, interconnectLatUs:15, maxGPUs:4 },
-    'rx-7900xtx': { name:'Radeon RX 7900 XTX', vram:24, bw:960, fp16Tflops:123, fp8Tflops:123, int8Tflops:123, vendor:'amd', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
+    'mi100': { name:'AMD MI100 32GB', vram:32, bw:1024, fp16Tflops:13.8, fp8Tflops:0, int8Tflops:13.8, vendor:'amd', interconnectBW:400, interconnectLatUs:5, maxGPUs:8 },
+    'mi50': { name:'AMD MI50 32GB', vram:32, bw:1024, fp16Tflops:13.8, fp8Tflops:0, int8Tflops:13.8, vendor:'amd', interconnectBW:400, interconnectLatUs:5, maxGPUs:8 },
+    'pro-v620': { name:'AMD Radeon Pro V620 16GB', vram:16, bw:512, fp16Tflops:13.8, fp8Tflops:0, int8Tflops:13.8, vendor:'amd', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
+    'rx-9700xt': { name:'AMD RX 9700 XT', vram:24, bw:864, fp16Tflops:56, fp8Tflops:112, int8Tflops:112, vendor:'amd', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
+    'rx-9070xt': { name:'AMD RX 9070 XT', vram:16, bw:640, fp16Tflops:49, fp8Tflops:98, int8Tflops:98, vendor:'amd', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
+    'ai-pro-r9700': { name:'AMD Radeon AI PRO R9700', vram:32, bw:645, fp16Tflops:48, fp8Tflops:96, int8Tflops:96, vendor:'amd', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
+    'w7900': { name:'AMD W7900', vram:48, bw:864, fp16Tflops:61, fp8Tflops:61, int8Tflops:122, vendor:'amd', interconnectBW:32, interconnectLatUs:15, maxGPUs:4 },
+    'rx-7900xtx': { name:'AMD RX 7900 XTX', vram:24, bw:960, fp16Tflops:123, fp8Tflops:123, int8Tflops:123, vendor:'amd', interconnectBW:32, interconnectLatUs:15, maxGPUs:2 },
     'strix-halo': { name:'AMD Ryzen AI Max 395 (Strix Halo)', vram:128, bw:256, fp16Tflops:30, fp8Tflops:30, int8Tflops:60, vendor:'amd', interconnectBW:0, interconnectLatUs:0, maxGPUs:1 },
+    // ── Apple ──
     'm4-max': { name:'Apple M4 Max', vram:128, bw:546, fp16Tflops:54, fp8Tflops:54, int8Tflops:54, vendor:'apple', interconnectBW:0, interconnectLatUs:0, maxGPUs:1 },
     'm4-pro': { name:'Apple M4 Pro', vram:48, bw:273, fp16Tflops:22, fp8Tflops:22, int8Tflops:22, vendor:'apple', interconnectBW:0, interconnectLatUs:0, maxGPUs:1 },
     'm2-ultra': { name:'Apple M2 Ultra', vram:192, bw:800, fp16Tflops:27, fp8Tflops:27, int8Tflops:27, vendor:'apple', interconnectBW:0, interconnectLatUs:0, maxGPUs:1 },
-    // ── Intel Gaudi ──
-    'gaudi2': { name:'Intel Gaudi 2', vram:96, bw:2460, fp16Tflops:420, fp8Tflops:865, int8Tflops:865, vendor:'intel', interconnectBW:150, interconnectLatUs:10, maxGPUs:8 },
+    // ── Intel ──
     'gaudi3': { name:'Intel Gaudi 3', vram:128, bw:3700, fp16Tflops:900, fp8Tflops:1835, int8Tflops:1835, vendor:'intel', interconnectBW:300, interconnectLatUs:8, maxGPUs:8 },
-    // ── Google TPU ──
-    'tpu-v5p': { name:'Google TPU v5p', vram:95, bw:2765, fp16Tflops:459, fp8Tflops:459, int8Tflops:918, vendor:'google', interconnectBW:400, interconnectLatUs:5, maxGPUs:8 },
-    'tpu-v6e': { name:'Google TPU v6e (Trillium)', vram:32, bw:1640, fp16Tflops:918, fp8Tflops:918, int8Tflops:1836, vendor:'google', interconnectBW:400, interconnectLatUs:5, maxGPUs:8 }
+    'gaudi2': { name:'Intel Gaudi 2', vram:96, bw:2460, fp16Tflops:420, fp8Tflops:865, int8Tflops:865, vendor:'intel', interconnectBW:150, interconnectLatUs:10, maxGPUs:8 },
+    // ── Google ──
+    'tpu-v6e': { name:'Google TPU v6e (Trillium)', vram:32, bw:1640, fp16Tflops:918, fp8Tflops:918, int8Tflops:1836, vendor:'google', interconnectBW:400, interconnectLatUs:5, maxGPUs:8 },
+    'tpu-v5p': { name:'Google TPU v5p', vram:95, bw:2765, fp16Tflops:459, fp8Tflops:459, int8Tflops:918, vendor:'google', interconnectBW:400, interconnectLatUs:5, maxGPUs:8 }
 };
 
 // ============ CONSTANTS ============
@@ -424,18 +535,25 @@ function populateModelSelect(selectEl) {
     for (const [k, m] of Object.entries(MODELS)) {
         let g = m.arch;
         if (m.arch === 'LLaMA') g = 'LLaMA Family';
-        else if (m.arch === 'Qwen3' || m.arch === 'Qwen2') g = 'Qwen Family';
+        else if (m.arch === 'Qwen3' || m.arch === 'Qwen3Next') g = 'Qwen 3 Family';
+        else if (m.arch === 'Qwen3.5' || m.arch === 'Qwen3.5MoE' || m.arch === 'Qwen4Exp') g = 'Qwen 3.5 / 3.6 / 3.8';
+        else if (m.arch === 'Qwen2') g = 'Qwen 2.5 Family';
         else if (m.arch === 'Mistral' || m.arch === 'Mixtral') g = 'Mistral / Mixtral';
         else if (m.arch === 'DeepSeek') g = 'DeepSeek';
         else if (m.arch === 'Phi') g = 'Phi';
         else if (m.arch === 'MiniMax') g = 'MiniMax';
-        else if (m.arch === 'Gemma') g = 'Gemma';
+        else if (m.arch === 'Gemma') g = 'Gemma 1.1 / 2';
+        else if (m.arch === 'Gemma3') g = 'Gemma 3';
+        else if (m.arch === 'Gemma3n') g = 'Gemma 3n';
+        else if (m.arch === 'Gemma4') g = 'Gemma 4';
         if (!groups[g]) groups[g] = [];
         groups[g].push({ key: k, name: m.name });
     }
     // Keep order consistent
     selectEl.innerHTML = '';
-    for (const g of ['LLaMA Family', 'Qwen Family', 'Mistral / Mixtral', 'DeepSeek', 'MiniMax', 'Phi', 'Gemma']) {
+    for (const g of ['LLaMA Family', 'Qwen 3 Family', 'Qwen 3.5 / 3.6 / 3.8', 'Qwen 2.5 Family',
+                     'Mistral / Mixtral', 'DeepSeek', 'MiniMax', 'Phi',
+                     'Gemma 1.1 / 2', 'Gemma 3', 'Gemma 3n', 'Gemma 4']) {
         if (!groups[g]) continue;
         const og = document.createElement('optgroup');
         og.label = g;
@@ -454,19 +572,20 @@ const VENDOR_DEVICE_GROUPS = {
     'amd': {
         label: 'AMD',
         groups: {
-            'Consumer / Pro': ['rx-9700xt','rx-9070xt','rx-7900xtx','ai-pro-r9700','w7900'],
+            'Consumer / Pro': ['rx-9700xt','rx-9070xt','rx-7900xtx','ai-pro-r9700','w7900','pro-v620'],
             'APU': ['strix-halo'],
-            'Data Center': ['mi325x','mi300x','mi250x'],
+            'Data Center': ['mi325x','mi300x','mi250x','mi100','mi50'],
         }
     },
     'nvidia': {
         label: 'NVIDIA',
         groups: {
-            'GeForce RTX 50': ['rtx-5090','rtx-5080','rtx-5070ti','rtx-5070'],
-            'GeForce RTX 40': ['rtx-4090','rtx-4080s','rtx-4080','rtx-4070tis','rtx-4070ti','rtx-4070s','rtx-4070','rtx-4060ti-16','rtx-4060ti','rtx-4060'],
-            'GeForce RTX 30': ['rtx-3090','rtx-3080ti','rtx-3080','rtx-3070ti','rtx-3070','rtx-3060ti','rtx-3060'],
-            'Edge / Arm': ['dgx-spark'],
-            'Data Center': ['b200-sxm','h200-sxm','h100-sxm','a100-sxm-80','a100-sxm-40','l40s','l4'],
+            'GeForce RTX 50': ['rtx-5090','rtx-5080','rtx-5070-ti','rtx-5070','rtx-5060-ti','rtx-5060'],
+            'GeForce RTX 40': ['rtx-4090','rtx-4080-super','rtx-4080','rtx-4070-ti-super','rtx-4070-ti','rtx-4070-super','rtx-4070','rtx-4060-ti','rtx-4060'],
+            'GeForce RTX 30': ['rtx-3090','rtx-3080-ti','rtx-3080','rtx-3070-ti','rtx-3070','rtx-3060-ti','rtx-3060'],
+            'GeForce RTX 20': ['rtx-2080-ti','rtx-2080-super','rtx-2080'],
+            'Edge / Arm': ['dgx-spark','cmp170hx'],
+            'Data Center': ['b200-sxm','h200-sxm','h100-sxm','a100-sxm-80','a100-sxm-40','v100-sxm-32','v100-sxm-16','l40s','l4','p100-16','p40'],
         }
     },
     'apple': {
