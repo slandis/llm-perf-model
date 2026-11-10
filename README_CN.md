@@ -14,27 +14,35 @@
 - **量化支持** — FP16、INT8/FP8、INT4 (GPTQ/AWQ)、3-bit、2-bit
 - **张量并行** — 1-8 卡并行的性能缩放估算
 
-## 支持的模型
+## 支持的模型（共 69 个）
 
-| 模型 | 参数量 | 架构 |
-|------|--------|------|
-| LLaMA 3 8B / 70B / 405B | 8B - 405B | Dense |
-| Qwen 2.5 7B / 32B / 72B | 7.6B - 72.7B | Dense |
-| Mistral 7B | 7.3B | Dense |
-| Mixtral 8x7B / 8x22B | 46.7B - 141B | MoE |
-| DeepSeek-V3 / R1 | 671B (活跃 37B) | MoE + MLA |
-| Phi-3 Mini | 3.8B | Dense |
-| Gemma 2 9B / 27B | 9.2B - 27.2B | Dense |
+| 模型家族 | 规格范围 | 架构 |
+|----------|----------|------|
+| LLaMA 3 / 3.1 / 3.2 / 3.3 | 1B - 405B | Dense |
+| Qwen 3（含 Coder、Coder-Next） | 0.6B - 235B | Dense + MoE |
+| Qwen 3.5 / 3.6 / 3.8（含 Flash-Next） | 0.8B - 180B | Dense + MoE，混合线性注意力 |
+| Qwen 2.5 | 0.5B - 72B | Dense |
+| Mistral / Mixtral | 7B - 141B | Dense + MoE |
+| DeepSeek-V2 / V3 / R1（含蒸馏版） | 2.4B - 671B | MoE + MLA |
+| Phi-3 / Phi-4 | 3.8B - 14B | Dense |
+| MiniMax（Text-01、M2.1、M2.5） | 10.5B - 456B | MoE（Lightning Attention） |
+| Gemma 1.1 / 2 | 2B - 27B | Dense |
+| Gemma 3 / 3n / 4（含 E2B/E4B、26B-A4B） | 1B - 31B | Dense + MoE，全局/线性注意力 |
 
-## 支持的设备
+混合线性注意力模型（Qwen 3.5+、Gemma 3/4、Qwen3-Coder-Next）按 softmax（O(n²)）与线性（O(n)）注意力层的实际比例分别建模。
+
+## 支持的设备（共 57 个）
 
 | 类别 | 设备 |
 |------|------|
-| NVIDIA 数据中心 | H200 SXM, H100 SXM, A100 80GB/40GB, L40S |
-| NVIDIA 消费级 | RTX 4090, RTX 4080, RTX 3090 |
-| AMD 数据中心 | MI300X, MI250X |
-| AMD 消费/专业级 | Radeon PRO W7900, RX 7900 XTX |
+| NVIDIA 数据中心 | B200, H200, H100, A100 (40/80GB), V100 (16/32GB), L40S, L4, P100, P40 |
+| NVIDIA GeForce | RTX 50 (5090-5060), RTX 40 (4090-4060), RTX 30 (3090-3060), RTX 20 (2080 Ti-2080) |
+| NVIDIA 边缘/计算 | DGX Spark, CMP 170HX 64GB |
+| AMD 数据中心 | MI325X, MI300X, MI250X, MI100, MI50 |
+| AMD Radeon | RX 9700 XT, RX 9070 XT, RX 7900 XTX, AI PRO R9700, W7900, Pro V620, Strix Halo APU |
 | Apple Silicon | M4 Max, M4 Pro, M2 Ultra |
+| Intel | Gaudi 3, Gaudi 2 |
+| Google | TPU v6e (Trillium), TPU v5p |
 
 ## 建模方法
 
